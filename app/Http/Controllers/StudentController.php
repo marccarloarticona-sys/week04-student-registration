@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Student;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -90,9 +91,13 @@ class StudentController extends Controller
             ],
         ]);
 
-        return back()->with(
-            'success',
-            'Student information validated successfully.'
-        );
+        $imagePath = $request->file('profile_picture')
+            ->store('student-profiles', 'public');
+
+        $validated['profile_picture'] = $imagePath;
+
+        Student::create($validated);
+
+        return back()->with('success', 'Student registered successfully!');
     }
 }
