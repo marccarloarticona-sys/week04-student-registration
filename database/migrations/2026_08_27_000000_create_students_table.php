@@ -10,14 +10,26 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->string('student_number')->unique();
-            $table->string('first_name');
-            $table->string('last_name');
+
+            $table->string('student_id', 50)->unique();
+
+            $table->string('first_name', 100);
+            $table->string('middle_name', 100)->nullable();
+            $table->string('last_name', 100);
+
             $table->string('email')->unique();
-            $table->date('date_of_birth')->nullable();
-            $table->string('course');
-            $table->unsignedTinyInteger('year_level');
-            $table->text('address')->nullable();
+            $table->string('mobile_number', 20);
+
+            $table->date('date_of_birth');
+            $table->string('gender', 30);
+
+            $table->string('program', 100);
+            $table->string('year_level', 30);
+
+            $table->text('address');
+
+            $table->string('profile_picture');
+
             $table->timestamps();
         });
     }
