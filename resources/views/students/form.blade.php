@@ -38,6 +38,22 @@
             <p class="mx-auto mt-4 max-w-3xl text-base leading-7 text-slate-600">Submit your details to begin your student record with the College of Computer Studies. Please use accurate information throughout this form.</p>
         </div>
 
+        @if (session('success'))
+            <div class="mx-auto mb-6 max-w-5xl rounded-xl border border-green-200 bg-green-50 p-4">
+                <div class="flex items-start gap-3">
+                    <div>
+                        <p class="font-semibold text-green-800">
+                            Success
+                        </p>
+
+                        <p class="mt-1 text-sm text-green-700">
+                            {{ session('success') }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        @endif
+
         @if ($errors->any())
             <div class="mb-6 rounded-xl border border-red-200 bg-red-50 p-4">
                 <h3 class="font-semibold text-red-800">

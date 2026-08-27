@@ -90,6 +90,9 @@ class StudentController extends Controller
             ],
         ]);
 
-        return back();
+        return back()->with(
+            'success',
+            'Student information validated successfully.'
+        );
     }
 }
