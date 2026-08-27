@@ -39,9 +39,12 @@
         </div>
 
         @if ($errors->any())
-            <div class="mb-6 border-l-4 border-red-500 bg-red-50 p-4 text-sm text-red-700" role="alert">
-                <p class="font-semibold">Please review the following items:</p>
-                <ul class="mt-2 list-disc space-y-1 pl-5">
+            <div class="mb-6 rounded-xl border border-red-200 bg-red-50 p-4">
+                <h3 class="font-semibold text-red-800">
+                    Please check your information.
+                </h3>
+
+                <ul class="mt-2 list-disc space-y-1 pl-5 text-sm text-red-700">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
@@ -55,7 +58,7 @@
                 <section class="border-b border-[#d1d5db] p-6 md:p-8">
                     <div class="mb-6 flex items-start gap-4"><span class="section-number flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold">01</span><div><h2 class="text-xl font-bold">Student information</h2><p class="mt-1 text-sm text-slate-500">Tell us who you are.</p></div></div>
                     <div class="grid gap-5 md:grid-cols-2">
-                        <div class="md:col-span-2"><label for="student_id" class="mb-2 block text-sm font-semibold">Student ID</label><input id="student_id" type="text" name="student_id" value="{{ old('student_id') }}" placeholder="e.g. 2026-00001" class="field w-full rounded-md px-4 py-3" required></div>
+                        <div class="md:col-span-2"><label for="student_id" class="mb-2 block text-sm font-semibold">Student ID</label><input id="student_id" type="text" name="student_id" value="{{ old('student_id') }}" placeholder="xxxx-xxxx" pattern="[0-9]{4}-[0-9]{4}" maxlength="9" inputmode="numeric" title="Use 8 digits in this format: 0123-4567" class="field w-full rounded-md px-4 py-3" required></div>
                         <div><label for="first_name" class="mb-2 block text-sm font-semibold">First name</label><input id="first_name" type="text" name="first_name" value="{{ old('first_name') }}" placeholder="First name" class="field w-full rounded-md px-4 py-3" required></div>
                         <div><label for="middle_name" class="mb-2 block text-sm font-semibold">Middle name <span class="font-normal text-slate-400">(optional)</span></label><input id="middle_name" type="text" name="middle_name" value="{{ old('middle_name') }}" placeholder="Middle name" class="field w-full rounded-md px-4 py-3"></div>
                         <div><label for="last_name" class="mb-2 block text-sm font-semibold">Last name</label><input id="last_name" type="text" name="last_name" value="{{ old('last_name') }}" placeholder="Last name" class="field w-full rounded-md px-4 py-3" required></div>
@@ -83,8 +86,70 @@
 
                 <section class="p-6 md:p-8">
                     <div class="mb-6 flex items-start gap-4"><span class="section-number flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold">04</span><div><h2 class="text-xl font-bold">Profile picture</h2><p class="mt-1 text-sm text-slate-500">Use a recent, clear image in JPG or PNG format.</p></div></div>
-                    <input id="profile_picture" type="file" name="profile_picture" accept=".jpg,.jpeg,.png" class="field block w-full rounded-md p-3 text-sm">
+
+                    <div class="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
+                        {{-- Preview --}}
+                        <div class="shrink-0">
+                            <div id="preview-wrap" class="relative h-32 w-32 overflow-hidden rounded-full border-4 border-[#93c5fd] bg-slate-100 shadow-md">
+                                <img id="preview-img" src="" alt="" class="hidden h-full w-full object-cover">
+                                <div id="preview-placeholder" class="flex h-full w-full flex-col items-center justify-center gap-1 text-slate-400">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg>
+                                    <span class="text-xs">No photo</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Drop zone --}}
+                        <label for="profile_picture" id="drop-zone"
+                            class="flex flex-1 cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-[#93c5fd] bg-[#eff6ff] px-6 py-8 text-center transition hover:border-[#2563eb] hover:bg-blue-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-[#2563eb]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" /></svg>
+                            <div>
+                                <p class="text-sm font-semibold text-[#263746]">Click to upload <span class="text-[#2563eb]">or drag &amp; drop</span></p>
+                                <p class="mt-1 text-xs text-slate-500">JPG, JPEG, or PNG &mdash; max 2 MB</p>
+                            </div>
+                            <span id="file-name" class="hidden rounded-full bg-white px-3 py-1 text-xs font-medium text-[#2563eb] shadow-sm ring-1 ring-[#93c5fd]"></span>
+                            <input id="profile_picture" type="file" name="profile_picture" accept=".jpg,.jpeg,.png" class="sr-only" required>
+                        </label>
+                    </div>
+
+                    @error('profile_picture')
+                        <p class="mt-2 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
                 </section>
+
+                <script>
+                    const input = document.getElementById('profile_picture');
+                    const img   = document.getElementById('preview-img');
+                    const ph    = document.getElementById('preview-placeholder');
+                    const label = document.getElementById('file-name');
+                    const zone  = document.getElementById('drop-zone');
+
+                    function applyFile(file) {
+                        if (!file) return;
+                        label.textContent = file.name;
+                        label.classList.remove('hidden');
+                        const url = URL.createObjectURL(file);
+                        img.src = url;
+                        img.classList.remove('hidden');
+                        ph.classList.add('hidden');
+                    }
+
+                    input.addEventListener('change', () => applyFile(input.files[0]));
+
+                    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('border-[#2563eb]', 'bg-blue-100'); });
+                    zone.addEventListener('dragleave', () => zone.classList.remove('border-[#2563eb]', 'bg-blue-100'));
+                    zone.addEventListener('drop', e => {
+                        e.preventDefault();
+                        zone.classList.remove('border-[#2563eb]', 'bg-blue-100');
+                        const file = e.dataTransfer.files[0];
+                        if (file) {
+                            const dt = new DataTransfer();
+                            dt.items.add(file);
+                            input.files = dt.files;
+                            applyFile(file);
+                        }
+                    });
+                </script>
 
                 <div class="flex flex-col gap-4 bg-[#eff6ff] p-6 sm:flex-row sm:items-center sm:justify-between md:px-8"><p class="text-xs leading-5 text-slate-600">By submitting, you confirm that the information provided is accurate.</p><button type="submit" class="shrink-0 rounded-md bg-[#2563eb] px-7 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-[#1d4ed8] focus:outline-none focus:ring-4 focus:ring-blue-200">Submit registration</button></div>
             </form>
