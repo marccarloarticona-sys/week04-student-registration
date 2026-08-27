@@ -40,18 +40,21 @@ class StudentController extends Controller
             'first_name' => [
                 'required',
                 'string',
+                'regex:/^[a-zA-Z\s]+$/',
                 'max:100',
             ],
 
             'middle_name' => [
                 'nullable',
                 'string',
+                'regex:/^[a-zA-Z\s]+$/',
                 'max:100',
             ],
 
             'last_name' => [
                 'required',
                 'string',
+                'regex:/^[a-zA-Z\s]+$/',
                 'max:100',
             ],
 
@@ -64,8 +67,7 @@ class StudentController extends Controller
 
             'mobile_number' => [
                 'required',
-                'numeric',
-                'digits_between:10,11',
+                'digits:11',
             ],
 
             'date_of_birth' => [
