@@ -96,8 +96,15 @@ class StudentController extends Controller
 
         $validated['profile_picture'] = $imagePath;
 
-        Student::create($validated);
+        $student = Student::create($validated);
 
-        return back()->with('success', 'Student registered successfully!');
+        return redirect()
+            ->route('students.show', $student)
+            ->with('success', 'Student registered successfully!');
+    }
+
+    public function show(Student $student)
+    {
+        return view('students.show', compact('student'));
     }
 }
