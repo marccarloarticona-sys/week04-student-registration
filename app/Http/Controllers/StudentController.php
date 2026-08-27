@@ -12,6 +12,21 @@ class StudentController extends Controller
         return view('students.form');
     }
 
+    public function index(Request $request)
+    {
+        $programs = [
+            'bsit' => 'BS Information Technology',
+            'bsccs' => 'BS Computer Science',
+        ];
+        $program = $request->query('program');
+        $students = Student::query()
+            ->when(isset($programs[$program]), fn ($query) => $query->where('program', $programs[$program]))
+            ->latest()
+            ->get();
+
+        return view('students.list', compact('students', 'program'));
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([

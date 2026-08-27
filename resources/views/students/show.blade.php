@@ -209,13 +209,21 @@
 
             {{-- Footer --}}
             <div class="flex justify-end bg-slate-50 px-6 py-5 md:px-8">
+                <div class="flex w-full flex-col gap-3 sm:flex-row sm:justify-end">
+                    <a
+                        href="{{ route('students.index') }}"
+                        class="rounded-md border border-slate-300 px-6 py-3 text-center text-sm font-bold text-[#263746] transition hover:bg-slate-100"
+                    >
+                        View All Students
+                    </a>
 
-                <a
-                    href="{{ route('students.create') }}"
-                    class="rounded-md bg-[#2563eb] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#1d4ed8]"
-                >
-                    Register Another Student
-                </a>
+                    <a
+                        href="{{ route('students.create') }}"
+                        class="rounded-md bg-[#2563eb] px-6 py-3 text-center text-sm font-bold text-white transition hover:bg-[#1d4ed8]"
+                    >
+                        Register Another Student
+                    </a>
+                </div>
 
             </div>
 

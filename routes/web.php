@@ -13,5 +13,8 @@ Route::get('/register', [StudentController::class, 'create'])
 Route::post('/register', [StudentController::class, 'store'])
     ->name('students.store');
 
+Route::get('/students', [StudentController::class, 'index'])
+    ->name('students.index');
+
 Route::get('/students/{student}', [StudentController::class, 'show'])
     ->name('students.show');
